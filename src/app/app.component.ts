@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ImageService } from '../app/image.service';
+import exifr from 'exifr';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ export class AppComponent {
   constructor(private imageService: ImageService) {}
 
   processImage(imageInput: any) {
-    const file: File = imageInput.files[0];
+    var exifr = require('exifr');
+    var images: File = imageInput.files;
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
@@ -24,7 +26,11 @@ export class AppComponent {
       //   (err) => {}
       // );
     });
-    var blob = reader.readAsDataURL(file);
+    for (let image of imageInput.files) {
+      // var blob = reader.readAsDataURL(image);
+      exifr.parse(image, true);
+      exifr.parse(image).then((output: any) => console.log('output', output));
+    }
   }
 }
 
