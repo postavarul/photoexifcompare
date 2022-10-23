@@ -9,12 +9,14 @@ import exifr from 'exifr';
 })
 export class AppComponent {
   title = 'photoexifcompare';
+  output: any;
   constructor(private imageService: ImageService) {}
 
   getExif(imageInput: any) {
     for (let image of imageInput.files) {
-      exifr.parse(image, true);
-      exifr.parse(image).then((output: any) => console.log('output', output));
+      exifr
+        .parse(image)
+        .then((output: any) => (this.output = JSON.stringify(output)));
     }
   }
 }
